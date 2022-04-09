@@ -11,7 +11,7 @@ $name=$_POST["ename"];
 $eid=$_POST["eid"];
 
 $email=$_POST["email"];
-$password=$_POST["password"];
+$pass=$_POST["password"];
 
 
 $servername = "localhost";
@@ -49,8 +49,8 @@ echo "Connected successfully";
 
 // new record Inserted
 try{
-    $sql = "INSERT INTO admins (ename,eid,email,password)
-    VALUES ('$name','$eid' ,'$email','$password')";
+    $sql = "INSERT INTO admins (ename,eid,email,pwd)
+    VALUES ('$name','$eid' ,'$email','$pass')";
     
     if ($conn->query($sql) === TRUE) {
       echo "New record created successfully";

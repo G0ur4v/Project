@@ -1,7 +1,7 @@
 <?php
-    session_start();
-    $message="";
-    if(count($_POST)>0) {
+     session_start();
+    if(count($_POST)>0) 
+    {
       $servername = "localhost";
       $username = "root";
       $password = "";
@@ -17,19 +17,50 @@
       }
       echo "Connected successfully";
 
-        $result = mysqli_query($conn,"SELECT * FROM admins WHERE eid='" . $_POST['eid'] . "' and password = '". $_POST["password"]."'");
-        
-        $row  = mysqli_fetch_array($result);
-        if(is_array($row)) {
-        $_SESSION["id"] = $row['id'];
-        $_SESSION["ename"] = $row['ename'];
-        echo "logged in success";
-        } else {
-         $message = "Invalid Username or Password!";
-        }
-    }
-    if(isset($_SESSION["id"])) {
-    header("Location:index.php");
+       if(isset($_POST['submit']))
+       {
+            $eid=$_POST['eid'];
+            $password=$_POST['password'];
+
+            $check_eid="select * from admins where eid='$eid'";
+            $result = $conn->query($check_eid);
+
+            echo "num rows ".$result->num_rows;
+            $row = $result->fetch_assoc();
+            // echo "<br>";
+            // echo "".$row['ename'];
+            // echo "".$row['eid'];
+            if($result)
+            {
+              $check_password=$conn->query("select * from admins where pwd='$password'");
+              
+              if($check_password->num_rows)
+              {
+                 $_SESSION['ename']=$row['ename'];
+                 $_SESSION['eid']=$row['eid'];
+
+                ?>
+
+              <script>
+                alert("log in success");
+                location.replace("dashboard.php");
+
+                </script>
+                <?php
+
+                // echo "logged in successfully";
+
+              }
+              else
+              {
+                echo "wrong password";
+              }
+            }
+            else
+            {
+              echo "wrong user id";
+            }
+       }
     }
 ?>
 <!DOCTYPE html>
@@ -104,7 +135,7 @@
                 
                <div class="row align-items-center mt-4">
              <div class="col">
-             <button type="submit" class="btn btn-primary">Login</button>
+             <button type="submit" name="submit" class="btn btn-primary">Login</button>
              </div>
              </div>
              <div class="row align-items-center mt-4">
